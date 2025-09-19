@@ -39,6 +39,17 @@ export default function LoginForm({ children }: LoginFormProps) {
     setIsLoggingIn(false)
   }
 
+  const handleDemoLogin = async () => {
+    setIsLoggingIn(true)
+    setError('')
+
+    const success = await login('client_001', 'demo123')
+    if (!success) {
+      setError('Demo login failed. Please try again.')
+    }
+    setIsLoggingIn(false)
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -95,7 +106,7 @@ export default function LoginForm({ children }: LoginFormProps) {
             </div>
           )}
 
-          <div>
+          <div className="space-y-3">
             <button
               type="submit"
               disabled={isLoggingIn}
@@ -110,11 +121,36 @@ export default function LoginForm({ children }: LoginFormProps) {
                 </>
               )}
             </button>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">or</span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              disabled={isLoggingIn}
+              className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-horseradish-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoggingIn ? (
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600"></div>
+              ) : (
+                <>
+                  <Shield className="w-4 h-4 mr-2" />
+                  Demo Login (client_001)
+                </>
+              )}
+            </button>
           </div>
 
           <div className="text-center">
             <p className="text-xs text-gray-500">
-              Demo credentials: client_001 / demo123
+              Demo bypass for development - will be replaced with Google OAuth
             </p>
           </div>
         </form>
